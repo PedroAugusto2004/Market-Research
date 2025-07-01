@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, Star, TrendingUp, Award, Users, Rocket, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, DollarSign, TrendingUp, Award, Users, Rocket, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface FormData {
@@ -171,7 +169,7 @@ const FinancialSurveyForm = () => {
     switch (currentStep) {
       case 0:
         return (
-          <div className="space-y-8 animate-fade-in-up text-center">
+          <div className="space-y-8 animate-fadein-smooth text-center">
             <div className="space-y-6">
               <div className="flex items-center justify-center space-x-3 mb-8">
                 <TrendingUp className="h-10 w-10 text-fine-green-500" />
@@ -212,7 +210,7 @@ const FinancialSurveyForm = () => {
 
       case 1:
         return (
-          <div className="space-y-6 animate-slide-in-right">
+          <div className="space-y-6 bg-transparent animate-fadein-smooth">
             <div className="space-y-4">
               <Label htmlFor="name" className="text-lg font-medium text-gray-200">
                 What's your name? *
@@ -221,7 +219,8 @@ const FinancialSurveyForm = () => {
                 id="name"
                 value={formData.name}
                 onChange={(e) => updateFormData('name', e.target.value)}
-                className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
+                className="h-12 text-lg border-2 border-gray-600 bg-transparent text-white focus:border-gray-600 focus:ring-0 focus:outline-none focus-visible:border-gray-600 focus-visible:ring-0 focus-visible:outline-none transition-none"
+                style={{ boxShadow: 'none', borderColor: '#475569', outline: 'none' }}
                 placeholder="Enter your full name"
               />
             </div>
@@ -234,9 +233,10 @@ const FinancialSurveyForm = () => {
                 type="email"
                 value={formData.email}
                 onChange={(e) => updateFormData('email', e.target.value)}
-                className={`h-12 text-lg border-2 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300 ${
+                className={`h-12 text-lg border-2 bg-transparent text-white focus:border-gray-600 focus:ring-0 focus:outline-none focus-visible:border-gray-600 focus-visible:ring-0 focus-visible:outline-none transition-none ${
                   formData.email && !isValidEmail(formData.email) ? 'border-red-500' : 'border-gray-600'
                 }`}
+                style={{ boxShadow: 'none', borderColor: formData.email && !isValidEmail(formData.email) ? '#ef4444' : '#475569', outline: 'none' }}
                 placeholder="Enter your email address"
               />
               {formData.email && !isValidEmail(formData.email) && (
@@ -248,7 +248,7 @@ const FinancialSurveyForm = () => {
 
       case 2:
         return (
-          <div className="space-y-6 animate-slide-in-right">
+          <div className="space-y-6 animate-fadein-smooth">
             <Label className="text-lg font-medium text-gray-200">What is your age range? *</Label>
             <RadioGroup
               value={formData.age}
@@ -267,7 +267,7 @@ const FinancialSurveyForm = () => {
 
       case 3:
         return (
-          <div className="space-y-6 animate-slide-in-right">
+          <div className="space-y-6 animate-fadein-smooth">
             <div className="space-y-4">
               <Label className="text-lg font-medium text-gray-200">What is your gender? *</Label>
               <RadioGroup
@@ -291,7 +291,8 @@ const FinancialSurveyForm = () => {
                 id="location"
                 value={formData.location}
                 onChange={(e) => updateFormData('location', e.target.value)}
-                className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
+                className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-gray-600 focus:ring-0 focus:outline-none focus-visible:border-gray-600 focus-visible:ring-0 focus-visible:outline-none transition-none"
+                style={{ boxShadow: 'none', borderColor: '#475569', outline: 'none' }}
                 placeholder="e.g., United States, New York, NY"
               />
             </div>
@@ -300,7 +301,7 @@ const FinancialSurveyForm = () => {
 
       case 4:
         return (
-          <div className="space-y-6 animate-slide-in-right">
+          <div className="space-y-6 animate-fadein-smooth">
             <Label className="text-lg font-medium text-gray-200">
               Which financial education topics interest you the most right now? *
               <br />
@@ -330,7 +331,7 @@ const FinancialSurveyForm = () => {
 
       case 5:
         return (
-          <div className="space-y-6 animate-slide-in-right">
+          <div className="space-y-6 animate-fadein-smooth">
             <Label className="text-lg font-medium text-gray-200">
               Have you ever used or are you currently using any app or platform to learn about personal finance? *
             </Label>
@@ -358,7 +359,8 @@ const FinancialSurveyForm = () => {
                   id="platforms"
                   value={formData.platformsUsed}
                   onChange={(e) => updateFormData('platformsUsed', e.target.value)}
-                  className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
+                  className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-gray-600 focus:ring-0 focus:outline-none focus-visible:border-gray-600 focus-visible:ring-0 focus-visible:outline-none transition-none"
+                  style={{ boxShadow: 'none', borderColor: '#475569', outline: 'none' }}
                   placeholder="e.g., Mint, YNAB, Robinhood, etc."
                 />
               </div>
@@ -368,7 +370,7 @@ const FinancialSurveyForm = () => {
 
       case 6:
         return (
-          <div className="space-y-6 animate-slide-in-right">
+          <div className="space-y-6 animate-fadein-smooth">
             {formData.hasUsedApps === 'yes' && (
               <>
                 <div className="space-y-4">
@@ -448,7 +450,7 @@ const FinancialSurveyForm = () => {
 
       case 7:
         return (
-          <div className="space-y-6 animate-slide-in-right">
+          <div className="space-y-6 animate-fadein-smooth">
             <div className="space-y-4">
               <Label className="text-lg font-medium text-gray-200">
                 If there were a free app that taught you personal finance in a practical and fun way, with rewards for progress (like certificates, benefits, or prizes), how interested would you be? *
@@ -547,48 +549,46 @@ const FinancialSurveyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center p-4">
-      <div className="max-w-4xl w-full">
-        <Card className="shadow-2xl bg-slate-800/90 backdrop-blur-sm border-0">
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center p-2 sm:p-4">
+      <div className="w-full max-w-4xl mx-auto p-2 sm:p-8 bg-transparent shadow-none rounded-lg">
+        <Card className={`${currentStep === 0 ? 'bg-transparent' : 'bg-slate-800/90'} backdrop-blur-sm border-0`}> 
           {currentStep > 0 && (
-            <CardHeader className="pb-6">
-              <div className="flex items-center justify-between mb-4">
+            <CardHeader className="pb-4 sm:pb-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2 sm:gap-0">
                 <div className="flex items-center space-x-2">
-                  <Star className="h-6 w-6 text-fine-yellow-500" />
-                  <span className="text-sm font-medium text-gray-400">
+                  {/* Always use DollarSign icon for all steps */}
+                  <DollarSign className="h-6 w-6 text-fine-yellow-500" />
+                  <span className="text-xs sm:text-sm font-medium text-gray-400">
                     Step {currentStep + 1} of {totalSteps}
                   </span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-white">
-                  <Clock className="h-4 w-4" />
-                  <span>Takes less than 2 minutes to complete</span>
                 </div>
               </div>
               <Progress 
                 value={progress} 
-                className="h-3 bg-gray-800 [&>div]:bg-green-500"
+                className="h-2 sm:h-3 bg-gray-800 [&>div]:bg-green-500"
               />
-              <div className="flex justify-between text-xs text-gray-500 mt-2">
+              <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2">
                 <span>Getting started</span>
                 <span>Almost done!</span>
               </div>
             </CardHeader>
           )}
 
-          <CardContent className="px-8 pb-8">
-            <div className="min-h-[400px]">
+          <CardContent className="px-2 sm:px-8 pb-8">
+            <div className="min-h-[300px] sm:min-h-[400px]">
               {renderStep()}
             </div>
 
             {currentStep > 0 && (
-              <div className="flex justify-between mt-8 pt-6">
+              <div className="flex flex-col sm:flex-row justify-between mt-8 pt-6 gap-4 sm:gap-0">
                 <Button
                   variant="outline"
                   onClick={prevStep}
-                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-gray-800 text-gray-300"
+                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-gray-800 text-gray-300 transition-none hover:bg-gray-800 hover:text-gray-300 focus:bg-gray-800 focus:text-gray-300 active:bg-gray-800 active:text-gray-300"
+                  style={{ pointerEvents: 'auto' }}
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  <span>Previous</span>
+                  <span className="hover:text-gray-300 focus:text-gray-300 active:text-gray-300">Previous</span>
                 </Button>
 
                 {currentStep === totalSteps - 1 ? (
@@ -618,4 +618,22 @@ const FinancialSurveyForm = () => {
 };
 
 export default FinancialSurveyForm;
+
+/*
+Add this to your global CSS (e.g., index.css or App.css) if not already present:
+
+@keyframes fadein-smooth {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-fadein-smooth {
+  animation: fadein-smooth 0.7s cubic-bezier(0.33,1,0.68,1) both;
+}
+*/
 

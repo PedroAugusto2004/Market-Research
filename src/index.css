@@ -103,3 +103,20 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/*
+Add this to your global CSS (e.g., index.css or App.css) if not already present:
+*/
+@keyframes fadein-smooth {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-fadein-smooth {
+  animation: fadein-smooth 0.7s cubic-bezier(0.33,1,0.68,1) both;
+}
