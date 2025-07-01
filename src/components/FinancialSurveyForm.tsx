@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, Star, TrendingUp, Award, Users, Rocket } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star, TrendingUp, Award, Users, Rocket, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface FormData {
@@ -58,12 +58,17 @@ const FinancialSurveyForm = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const validateCurrentStep = () => {
     switch (currentStep) {
       case 0:
         return true; // Welcome page, no validation needed
       case 1:
-        return formData.name.trim() !== '' && formData.email.trim() !== '';
+        return formData.name.trim() !== '' && formData.email.trim() !== '' && isValidEmail(formData.email);
       case 2:
         return formData.age !== '';
       case 3:
@@ -88,9 +93,13 @@ const FinancialSurveyForm = () => {
     if (validateCurrentStep() && currentStep < totalSteps - 1) {
       setCurrentStep(prev => prev + 1);
     } else if (!validateCurrentStep()) {
+      let errorMessage = "Fill in all the required information before proceeding.";
+      if (currentStep === 1 && formData.email.trim() !== '' && !isValidEmail(formData.email)) {
+        errorMessage = "Please enter a valid email address.";
+      }
       toast({
         title: "Please complete all required fields",
-        description: "Fill in all the required information before proceeding.",
+        description: errorMessage,
         variant: "destructive"
       });
     }
@@ -175,9 +184,10 @@ const FinancialSurveyForm = () => {
               <p className="text-lg text-gray-400 max-w-2xl mx-auto">
                 To help us with that, we're conducting a quick survey to better understand people's habits and needs on this topic.
               </p>
-              <div className="bg-fine-green-900/20 border border-fine-green-500/30 rounded-lg p-6 max-w-md mx-auto">
-                <p className="text-fine-green-300 font-medium text-lg">
-                  ⏱️ Takes less than 2 minutes to complete
+              <div className="bg-fine-green-900/20 rounded-lg p-6 max-w-md mx-auto">
+                <p className="text-white font-medium text-lg flex items-center justify-center space-x-2">
+                  <Clock className="h-5 w-5" />
+                  <span>Takes less than 2 minutes to complete</span>
                 </p>
               </div>
               <p className="text-2xl font-medium text-white">Can we count on you?</p>
@@ -222,9 +232,14 @@ const FinancialSurveyForm = () => {
                 type="email"
                 value={formData.email}
                 onChange={(e) => updateFormData('email', e.target.value)}
-                className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
+                className={`h-12 text-lg border-2 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300 ${
+                  formData.email && !isValidEmail(formData.email) ? 'border-red-500' : 'border-gray-600'
+                }`}
                 placeholder="Enter your email address"
               />
+              {formData.email && !isValidEmail(formData.email) && (
+                <p className="text-red-400 text-sm">Please enter a valid email address</p>
+              )}
             </div>
           </div>
         );
@@ -532,7 +547,7 @@ const FinancialSurveyForm = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 p-4">
       <div className="max-w-4xl mx-auto">
-        <Card className="shadow-2xl border-0 bg-gray-900/90 backdrop-blur-sm border border-gray-700">
+        <Card className="shadow-2xl bg-gray-900/90 backdrop-blur-sm">
           {currentStep > 0 && (
             <CardHeader className="pb-6">
               <div className="flex items-center justify-between mb-4">
@@ -549,7 +564,7 @@ const FinancialSurveyForm = () => {
               </div>
               <Progress 
                 value={progress} 
-                className="h-3 bg-gray-800"
+                className="h-3 bg-gray-800 [&>div]:bg-fine-green-500"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-2">
                 <span>Getting started</span>
@@ -564,11 +579,11 @@ const FinancialSurveyForm = () => {
             </div>
 
             {currentStep > 0 && (
-              <div className="flex justify-between mt-8 pt-6 border-t border-gray-700">
+              <div className="flex justify-between mt-8 pt-6">
                 <Button
                   variant="outline"
                   onClick={prevStep}
-                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 hover:border-fine-green-500 bg-gray-800 text-gray-300 hover:text-white transition-all duration-300"
+                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-gray-800 text-gray-300 transition-colors duration-300"
                 >
                   <ChevronLeft className="h-4 w-4" />
                   <span>Previous</span>
@@ -577,7 +592,7 @@ const FinancialSurveyForm = () => {
                 {currentStep === totalSteps - 1 ? (
                   <Button
                     onClick={handleSubmit}
-                    className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-all duration-300"
+                    className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-colors duration-300"
                   >
                     <Award className="h-4 w-4" />
                     <span>Submit Survey</span>
@@ -585,7 +600,7 @@ const FinancialSurveyForm = () => {
                 ) : (
                   <Button
                     onClick={nextStep}
-                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-all duration-300"
+                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-colors duration-300"
                   >
                     <span>Next</span>
                     <ChevronRight className="h-4 w-4" />
