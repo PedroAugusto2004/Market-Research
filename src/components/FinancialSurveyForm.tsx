@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ChevronLeft, ChevronRight, Star, TrendingUp, Award, Users } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star, TrendingUp, Award, Users, Rocket } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface FormData {
@@ -59,9 +58,41 @@ const FinancialSurveyForm = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const validateCurrentStep = () => {
+    switch (currentStep) {
+      case 0:
+        return true; // Welcome page, no validation needed
+      case 1:
+        return formData.name.trim() !== '' && formData.email.trim() !== '';
+      case 2:
+        return formData.age !== '';
+      case 3:
+        return formData.gender !== '' && formData.location.trim() !== '';
+      case 4:
+        return formData.interests.length > 0;
+      case 5:
+        return formData.hasUsedApps !== '' && (formData.hasUsedApps === 'no' || formData.platformsUsed.trim() !== '');
+      case 6:
+        if (formData.hasUsedApps === 'yes') {
+          return formData.platformFeatures.length > 0 && formData.experienceRating !== '' && formData.monthlyInvestment !== '';
+        }
+        return formData.monthlyInvestment !== '';
+      case 7:
+        return formData.interestLevel !== '' && formData.usageFrequency !== '' && formData.usefulness !== '' && formData.wouldRecommend !== '';
+      default:
+        return true;
+    }
+  };
+
   const nextStep = () => {
-    if (currentStep < totalSteps - 1) {
+    if (validateCurrentStep() && currentStep < totalSteps - 1) {
       setCurrentStep(prev => prev + 1);
+    } else if (!validateCurrentStep()) {
+      toast({
+        title: "Please complete all required fields",
+        description: "Fill in all the required information before proceeding.",
+        variant: "destructive"
+      });
     }
   };
 
@@ -72,11 +103,13 @@ const FinancialSurveyForm = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Form Data:', formData);
-    toast({
-      title: "Survey Submitted! 🎉",
-      description: "Thank you for helping us improve financial education!",
-    });
+    if (validateCurrentStep()) {
+      console.log('Form Data:', formData);
+      toast({
+        title: "Survey Submitted! 🎉",
+        description: "Thank you for helping us improve financial education!",
+      });
+    }
   };
 
   const ageOptions = [
@@ -127,24 +160,40 @@ const FinancialSurveyForm = () => {
     switch (currentStep) {
       case 0:
         return (
-          <div className="space-y-6 animate-fade-in-up">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center space-x-2 mb-6">
-                <TrendingUp className="h-8 w-8 text-fine-green-500" />
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-fine-green-500 to-fine-yellow-500 bg-clip-text text-transparent">
+          <div className="space-y-8 animate-fade-in-up text-center">
+            <div className="space-y-6">
+              <div className="flex items-center justify-center space-x-3 mb-8">
+                <TrendingUp className="h-10 w-10 text-fine-green-500" />
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-fine-green-500 to-fine-yellow-500 bg-clip-text text-transparent">
                   FinE Market Research
                 </h1>
               </div>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Hello! We are <span className="font-semibold text-fine-green-600">FinE</span>, a startup focused on transforming the way people learn about finance.
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Hello! We are <span className="font-semibold text-fine-green-400">FinE</span>, a startup focused on transforming the way people learn about finance.
                 We're developing an innovative digital solution designed to make financial learning more accessible and practical.
               </p>
-              <p className="text-gray-600">
+              <p className="text-lg text-gray-400 max-w-2xl mx-auto">
                 To help us with that, we're conducting a quick survey to better understand people's habits and needs on this topic.
-                <br />
-                <span className="font-medium text-fine-green-600">It takes less than 2 minutes to complete.</span>
               </p>
-              <p className="text-xl font-medium text-gray-800">Can we count on you?</p>
+              <div className="bg-fine-green-900/20 border border-fine-green-500/30 rounded-lg p-6 max-w-md mx-auto">
+                <p className="text-fine-green-300 font-medium text-lg">
+                  ⏱️ Takes less than 2 minutes to complete
+                </p>
+              </div>
+              <p className="text-2xl font-medium text-white">Can we count on you?</p>
+            </div>
+            
+            <div className="pt-8">
+              <Button
+                onClick={nextStep}
+                className="group relative overflow-hidden bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-semibold text-lg px-12 py-6 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-fine-green-500/25"
+              >
+                <span className="relative z-10 flex items-center space-x-3">
+                  <Rocket className="h-6 w-6 transition-transform group-hover:rotate-12" />
+                  <span>Get Started</span>
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-fine-yellow-400 to-fine-green-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+              </Button>
             </div>
           </div>
         );
@@ -153,19 +202,19 @@ const FinancialSurveyForm = () => {
         return (
           <div className="space-y-6 animate-slide-in-right">
             <div className="space-y-4">
-              <Label htmlFor="name" className="text-lg font-medium text-gray-800">
+              <Label htmlFor="name" className="text-lg font-medium text-gray-200">
                 What's your name? *
               </Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => updateFormData('name', e.target.value)}
-                className="h-12 text-lg border-2 border-gray-200 focus:border-fine-green-500 transition-all duration-300"
+                className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
                 placeholder="Enter your full name"
               />
             </div>
             <div className="space-y-4">
-              <Label htmlFor="email" className="text-lg font-medium text-gray-800">
+              <Label htmlFor="email" className="text-lg font-medium text-gray-200">
                 E-mail *
               </Label>
               <Input
@@ -173,7 +222,7 @@ const FinancialSurveyForm = () => {
                 type="email"
                 value={formData.email}
                 onChange={(e) => updateFormData('email', e.target.value)}
-                className="h-12 text-lg border-2 border-gray-200 focus:border-fine-green-500 transition-all duration-300"
+                className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
                 placeholder="Enter your email address"
               />
             </div>
@@ -183,16 +232,16 @@ const FinancialSurveyForm = () => {
       case 2:
         return (
           <div className="space-y-6 animate-slide-in-right">
-            <Label className="text-lg font-medium text-gray-800">What is your age range? *</Label>
+            <Label className="text-lg font-medium text-gray-200">What is your age range? *</Label>
             <RadioGroup
               value={formData.age}
               onValueChange={(value) => updateFormData('age', value)}
               className="space-y-3"
             >
               {ageOptions.map((option) => (
-                <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                  <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                  <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                  <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                  <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                 </div>
               ))}
             </RadioGroup>
@@ -203,29 +252,29 @@ const FinancialSurveyForm = () => {
         return (
           <div className="space-y-6 animate-slide-in-right">
             <div className="space-y-4">
-              <Label className="text-lg font-medium text-gray-800">What is your gender? *</Label>
+              <Label className="text-lg font-medium text-gray-200">What is your gender? *</Label>
               <RadioGroup
                 value={formData.gender}
                 onValueChange={(value) => updateFormData('gender', value)}
                 className="space-y-3"
               >
                 {genderOptions.map((option) => (
-                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                    <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                    <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
             <div className="space-y-4">
-              <Label htmlFor="location" className="text-lg font-medium text-gray-800">
+              <Label htmlFor="location" className="text-lg font-medium text-gray-200">
                 Where do you live? (Country, city and State/Province) *
               </Label>
               <Input
                 id="location"
                 value={formData.location}
                 onChange={(e) => updateFormData('location', e.target.value)}
-                className="h-12 text-lg border-2 border-gray-200 focus:border-fine-green-500 transition-all duration-300"
+                className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
                 placeholder="e.g., United States, New York, NY"
               />
             </div>
@@ -235,14 +284,14 @@ const FinancialSurveyForm = () => {
       case 4:
         return (
           <div className="space-y-6 animate-slide-in-right">
-            <Label className="text-lg font-medium text-gray-800">
+            <Label className="text-lg font-medium text-gray-200">
               Which financial education topics interest you the most right now? *
               <br />
-              <span className="text-sm text-gray-500 font-normal">Select all that apply.</span>
+              <span className="text-sm text-gray-400 font-normal">Select all that apply.</span>
             </Label>
             <div className="space-y-3">
               {interestOptions.map((option) => (
-                <div key={option} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
+                <div key={option} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
                   <Checkbox
                     id={option}
                     checked={formData.interests.includes(option)}
@@ -255,7 +304,7 @@ const FinancialSurveyForm = () => {
                     }}
                     className="border-2 border-fine-green-500 data-[state=checked]:bg-fine-green-500"
                   />
-                  <Label htmlFor={option} className="text-base cursor-pointer leading-relaxed">{option}</Label>
+                  <Label htmlFor={option} className="text-base cursor-pointer leading-relaxed text-gray-300">{option}</Label>
                 </div>
               ))}
             </div>
@@ -265,7 +314,7 @@ const FinancialSurveyForm = () => {
       case 5:
         return (
           <div className="space-y-6 animate-slide-in-right">
-            <Label className="text-lg font-medium text-gray-800">
+            <Label className="text-lg font-medium text-gray-200">
               Have you ever used or are you currently using any app or platform to learn about personal finance? *
             </Label>
             <RadioGroup
@@ -273,26 +322,26 @@ const FinancialSurveyForm = () => {
               onValueChange={(value) => updateFormData('hasUsedApps', value)}
               className="space-y-3"
             >
-              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                <RadioGroupItem value="yes" id="yes" className="border-2 border-fine-green-500" />
-                <Label htmlFor="yes" className="text-base cursor-pointer">Yes</Label>
+              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                <RadioGroupItem value="yes" id="yes" className="border-2 border-fine-green-500 text-fine-green-500" />
+                <Label htmlFor="yes" className="text-base cursor-pointer text-gray-300">Yes</Label>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                <RadioGroupItem value="no" id="no" className="border-2 border-fine-green-500" />
-                <Label htmlFor="no" className="text-base cursor-pointer">No</Label>
+              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                <RadioGroupItem value="no" id="no" className="border-2 border-fine-green-500 text-fine-green-500" />
+                <Label htmlFor="no" className="text-base cursor-pointer text-gray-300">No</Label>
               </div>
             </RadioGroup>
 
             {formData.hasUsedApps === 'yes' && (
               <div className="space-y-4 animate-fade-in-up">
-                <Label htmlFor="platforms" className="text-lg font-medium text-gray-800">
+                <Label htmlFor="platforms" className="text-lg font-medium text-gray-200">
                   If yes, which one(s)? *
                 </Label>
                 <Input
                   id="platforms"
                   value={formData.platformsUsed}
                   onChange={(e) => updateFormData('platformsUsed', e.target.value)}
-                  className="h-12 text-lg border-2 border-gray-200 focus:border-fine-green-500 transition-all duration-300"
+                  className="h-12 text-lg border-2 border-gray-600 bg-gray-800 text-white focus:border-fine-green-500 transition-all duration-300"
                   placeholder="e.g., Mint, YNAB, Robinhood, etc."
                 />
               </div>
@@ -306,14 +355,14 @@ const FinancialSurveyForm = () => {
             {formData.hasUsedApps === 'yes' && (
               <>
                 <div className="space-y-4">
-                  <Label className="text-lg font-medium text-gray-800">
+                  <Label className="text-lg font-medium text-gray-200">
                     What do you like most about these platforms? *
                     <br />
-                    <span className="text-sm text-gray-500 font-normal">Select all that apply.</span>
+                    <span className="text-sm text-gray-400 font-normal">Select all that apply.</span>
                   </Label>
                   <div className="space-y-3">
                     {platformFeatureOptions.map((option) => (
-                      <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
+                      <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
                         <Checkbox
                           id={option}
                           checked={formData.platformFeatures.includes(option)}
@@ -326,17 +375,17 @@ const FinancialSurveyForm = () => {
                           }}
                           className="border-2 border-fine-green-500 data-[state=checked]:bg-fine-green-500"
                         />
-                        <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                        <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <Label className="text-lg font-medium text-gray-800">
+                  <Label className="text-lg font-medium text-gray-200">
                     If you have used any platform or app to learn about finance, how would you rate your experience? *
                     <br />
-                    <span className="text-sm text-gray-500 font-normal">From 1 to 5, where 1 = Very dissatisfied and 5 = Very satisfied</span>
+                    <span className="text-sm text-gray-400 font-normal">From 1 to 5, where 1 = Very dissatisfied and 5 = Very satisfied</span>
                   </Label>
                   <RadioGroup
                     value={formData.experienceRating}
@@ -350,9 +399,9 @@ const FinancialSurveyForm = () => {
                       '4 – Satisfied',
                       '5 – Very satisfied'
                     ].map((option) => (
-                      <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                        <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                        <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                      <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                        <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                        <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                       </div>
                     ))}
                   </RadioGroup>
@@ -361,7 +410,7 @@ const FinancialSurveyForm = () => {
             )}
 
             <div className="space-y-4">
-              <Label className="text-lg font-medium text-gray-800">
+              <Label className="text-lg font-medium text-gray-200">
                 How much would you be willing to invest monthly in a complete financial education platform? *
               </Label>
               <RadioGroup
@@ -370,9 +419,9 @@ const FinancialSurveyForm = () => {
                 className="space-y-3"
               >
                 {monthlyInvestmentOptions.map((option) => (
-                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                    <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                    <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                   </div>
                 ))}
               </RadioGroup>
@@ -384,7 +433,7 @@ const FinancialSurveyForm = () => {
         return (
           <div className="space-y-6 animate-slide-in-right">
             <div className="space-y-4">
-              <Label className="text-lg font-medium text-gray-800">
+              <Label className="text-lg font-medium text-gray-200">
                 If there were a free app that taught you personal finance in a practical and fun way, with rewards for progress (like certificates, benefits, or prizes), how interested would you be? *
               </Label>
               <RadioGroup
@@ -399,16 +448,16 @@ const FinancialSurveyForm = () => {
                   'Interested',
                   'Very interested'
                 ].map((option) => (
-                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                    <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                    <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
             <div className="space-y-4">
-              <Label className="text-lg font-medium text-gray-800">
+              <Label className="text-lg font-medium text-gray-200">
                 How often do you think you would use an app like this? *
               </Label>
               <RadioGroup
@@ -423,16 +472,16 @@ const FinancialSurveyForm = () => {
                   '2 to 3 times a week',
                   'Daily'
                 ].map((option) => (
-                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                    <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                    <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
             <div className="space-y-4">
-              <Label className="text-lg font-medium text-gray-800">
+              <Label className="text-lg font-medium text-gray-200">
                 In your opinion, how useful would a free financial education app be for your life today? *
               </Label>
               <RadioGroup
@@ -447,16 +496,16 @@ const FinancialSurveyForm = () => {
                   'Very useful',
                   'Essential'
                 ].map((option) => (
-                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                    <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                    <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
             <div className="space-y-4">
-              <Label className="text-lg font-medium text-gray-800">
+              <Label className="text-lg font-medium text-gray-200">
                 Would you recommend this app to friends or family? *
               </Label>
               <RadioGroup
@@ -465,9 +514,9 @@ const FinancialSurveyForm = () => {
                 className="space-y-3"
               >
                 {['Yes', 'No', 'Maybe'].map((option) => (
-                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-fine-green-50 transition-colors duration-200">
-                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500" />
-                    <Label htmlFor={option} className="text-base cursor-pointer">{option}</Label>
+                  <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+                    <RadioGroupItem value={option} id={option} className="border-2 border-fine-green-500 text-fine-green-500" />
+                    <Label htmlFor={option} className="text-base cursor-pointer text-gray-300">{option}</Label>
                   </div>
                 ))}
               </RadioGroup>
@@ -481,66 +530,69 @@ const FinancialSurveyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-fine-green-50 via-white to-fine-yellow-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 p-4">
       <div className="max-w-4xl mx-auto">
-        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
-          <CardHeader className="pb-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <Star className="h-6 w-6 text-fine-yellow-500" />
-                <span className="text-sm font-medium text-gray-600">
-                  Step {currentStep + 1} of {totalSteps}
-                </span>
+        <Card className="shadow-2xl border-0 bg-gray-900/90 backdrop-blur-sm border border-gray-700">
+          {currentStep > 0 && (
+            <CardHeader className="pb-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-2">
+                  <Star className="h-6 w-6 text-fine-yellow-500" />
+                  <span className="text-sm font-medium text-gray-400">
+                    Step {currentStep + 1} of {totalSteps}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-400">
+                  <Users className="h-4 w-4" />
+                  <span>2 min survey</span>
+                </div>
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Users className="h-4 w-4" />
-                <span>2 min survey</span>
+              <Progress 
+                value={progress} 
+                className="h-3 bg-gray-800"
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-2">
+                <span>Getting started</span>
+                <span>Almost done!</span>
               </div>
-            </div>
-            <Progress 
-              value={progress} 
-              className="h-3 bg-gray-100"
-            />
-            <div className="flex justify-between text-xs text-gray-500 mt-2">
-              <span>Getting started</span>
-              <span>Almost done!</span>
-            </div>
-          </CardHeader>
+            </CardHeader>
+          )}
 
           <CardContent className="px-8 pb-8">
             <div className="min-h-[400px]">
               {renderStep()}
             </div>
 
-            <div className="flex justify-between mt-8 pt-6 border-t border-gray-100">
-              <Button
-                variant="outline"
-                onClick={prevStep}
-                disabled={currentStep === 0}
-                className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-200 hover:border-fine-green-300 transition-all duration-300"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                <span>Previous</span>
-              </Button>
+            {currentStep > 0 && (
+              <div className="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <Button
+                  variant="outline"
+                  onClick={prevStep}
+                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 hover:border-fine-green-500 bg-gray-800 text-gray-300 hover:text-white transition-all duration-300"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span>Previous</span>
+                </Button>
 
-              {currentStep === totalSteps - 1 ? (
-                <Button
-                  onClick={handleSubmit}
-                  className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-all duration-300 animate-pulse-green"
-                >
-                  <Award className="h-4 w-4" />
-                  <span>Submit Survey</span>
-                </Button>
-              ) : (
-                <Button
-                  onClick={nextStep}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-all duration-300"
-                >
-                  <span>Next</span>
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
+                {currentStep === totalSteps - 1 ? (
+                  <Button
+                    onClick={handleSubmit}
+                    className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-all duration-300"
+                  >
+                    <Award className="h-4 w-4" />
+                    <span>Submit Survey</span>
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={nextStep}
+                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-all duration-300"
+                  >
+                    <span>Next</span>
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
