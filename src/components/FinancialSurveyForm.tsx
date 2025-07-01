@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -545,9 +546,9 @@ const FinancialSurveyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 p-4">
-      <div className="max-w-4xl mx-auto">
-        <Card className="shadow-2xl bg-gray-900/90 backdrop-blur-sm">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4">
+      <div className="max-w-4xl w-full">
+        <Card className="shadow-2xl bg-gray-900/90 backdrop-blur-sm border-0">
           {currentStep > 0 && (
             <CardHeader className="pb-6">
               <div className="flex items-center justify-between mb-4">
@@ -583,7 +584,7 @@ const FinancialSurveyForm = () => {
                 <Button
                   variant="outline"
                   onClick={prevStep}
-                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-gray-800 text-gray-300 transition-colors duration-300"
+                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-gray-800 text-gray-300"
                 >
                   <ChevronLeft className="h-4 w-4" />
                   <span>Previous</span>
@@ -592,7 +593,7 @@ const FinancialSurveyForm = () => {
                 {currentStep === totalSteps - 1 ? (
                   <Button
                     onClick={handleSubmit}
-                    className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-colors duration-300"
+                    className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
                   >
                     <Award className="h-4 w-4" />
                     <span>Submit Survey</span>
@@ -600,7 +601,7 @@ const FinancialSurveyForm = () => {
                 ) : (
                   <Button
                     onClick={nextStep}
-                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-medium transition-colors duration-300"
+                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
                   >
                     <span>Next</span>
                     <ChevronRight className="h-4 w-4" />
