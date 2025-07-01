@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -546,9 +547,9 @@ const FinancialSurveyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center p-4">
       <div className="max-w-4xl w-full">
-        <Card className="shadow-2xl bg-gray-900/90 backdrop-blur-sm border-0">
+        <Card className="shadow-2xl bg-slate-800/90 backdrop-blur-sm border-0">
           {currentStep > 0 && (
             <CardHeader className="pb-6">
               <div className="flex items-center justify-between mb-4">
@@ -558,14 +559,14 @@ const FinancialSurveyForm = () => {
                     Step {currentStep + 1} of {totalSteps}
                   </span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-gray-400">
-                  <Users className="h-4 w-4" />
-                  <span>2 min survey</span>
+                <div className="flex items-center space-x-2 text-sm text-white">
+                  <Clock className="h-4 w-4" />
+                  <span>Takes less than 2 minutes to complete</span>
                 </div>
               </div>
               <Progress 
                 value={progress} 
-                className="h-3 bg-gray-800 [&>div]:bg-fine-green-500"
+                className="h-3 bg-gray-800 [&>div]:bg-green-500"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-2">
                 <span>Getting started</span>
@@ -617,3 +618,4 @@ const FinancialSurveyForm = () => {
 };
 
 export default FinancialSurveyForm;
+
