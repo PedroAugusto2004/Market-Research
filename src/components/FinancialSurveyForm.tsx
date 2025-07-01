@@ -48,6 +48,7 @@ const FinancialSurveyForm = () => {
     usefulness: '',
     wouldRecommend: ''
   });
+  const [stepAnimationKey, setStepAnimationKey] = useState(0);
 
   const { toast } = useToast();
 
@@ -91,6 +92,7 @@ const FinancialSurveyForm = () => {
 
   const nextStep = () => {
     if (validateCurrentStep() && currentStep < totalSteps - 1) {
+      setStepAnimationKey(prev => prev + 1); // force remount for animation
       setCurrentStep(prev => prev + 1);
     } else if (!validateCurrentStep()) {
       let errorMessage = "Fill in all the required information before proceeding.";
@@ -107,6 +109,7 @@ const FinancialSurveyForm = () => {
 
   const prevStep = () => {
     if (currentStep > 0) {
+      setStepAnimationKey(prev => prev + 1); // force remount for animation
       setCurrentStep(prev => prev - 1);
     }
   };
@@ -575,7 +578,7 @@ const FinancialSurveyForm = () => {
           )}
 
           <CardContent className="px-2 sm:px-8 pb-8">
-            <div className="min-h-[300px] sm:min-h-[400px]">
+            <div key={stepAnimationKey} className="min-h-[300px] sm:min-h-[400px]">
               {renderStep()}
             </div>
 
