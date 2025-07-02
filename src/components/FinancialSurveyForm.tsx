@@ -552,9 +552,9 @@ const FinancialSurveyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 flex items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-4xl mx-auto p-2 sm:p-8 bg-transparent shadow-none rounded-lg">
-        <Card className={`${currentStep === 0 ? 'bg-transparent' : 'bg-slate-800/90'} backdrop-blur-sm border-0`}> 
+    <div className="min-h-screen bg-black flex items-center justify-center p-2 sm:p-4">
+      <div className="w-full max-w-4xl mx-auto p-2 sm:p-8 bg-black shadow-none rounded-lg">
+        <Card className={`${currentStep === 0 ? 'bg-black' : 'bg-black/90'} backdrop-blur-sm border-0`}> 
           {currentStep > 0 && (
             <CardHeader className="pb-4 sm:pb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2 sm:gap-0">
@@ -568,7 +568,8 @@ const FinancialSurveyForm = () => {
               </div>
               <Progress 
                 value={progress} 
-                className="h-2 sm:h-3 bg-gray-800 [&>div]:bg-green-500"
+                className="h-2 sm:h-3 bg-black rounded-full overflow-hidden shadow-inner border border-gray-700 [&>div]:bg-green-500 [&>div]:transition-all [&>div]:duration-700 [&>div]:ease-in-out"
+                style={{ boxShadow: '0 2px 8px 0 rgba(34,197,94,0.15)', border: '1.5px solid #475569' }}
               />
               <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2">
                 <span>Getting started</span>
@@ -587,7 +588,7 @@ const FinancialSurveyForm = () => {
                 <Button
                   variant="outline"
                   onClick={prevStep}
-                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-gray-800 text-gray-300 transition-none hover:bg-gray-800 hover:text-gray-300 focus:bg-gray-800 focus:text-gray-300 active:bg-gray-800 active:text-gray-300"
+                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-black text-gray-300 transition-none hover:bg-black hover:text-gray-300 focus:bg-black focus:text-gray-300 active:bg-black active:text-gray-300"
                   style={{ pointerEvents: 'auto' }}
                 >
                   <ChevronLeft className="h-4 w-4" />
