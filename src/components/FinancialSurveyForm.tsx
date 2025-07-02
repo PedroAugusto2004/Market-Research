@@ -198,7 +198,7 @@ const FinancialSurveyForm = () => {
             <div className="pt-8">
               <Button
                 onClick={nextStep}
-                className="group relative overflow-hidden bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-semibold text-lg px-12 py-6 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-fine-green-500/25"
+                className="group relative overflow-hidden bg-gradient-to-r from-fine-green-500 to-fine-green-600 hover:from-fine-green-600 hover:to-fine-green-700 text-white font-semibold text-base sm:text-lg px-6 py-3 sm:px-12 sm:py-6 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-fine-green-500/25"
               >
                 <span className="relative z-10 flex items-center space-x-3">
                   <Rocket className="h-6 w-6 transition-transform group-hover:rotate-12" />
@@ -552,10 +552,10 @@ const FinancialSurveyForm = () => {
 
   return (
     <div className="relative min-h-screen bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
-      {/* Minimalistic animated background */}
+      {/* Minimalistic animated background - responsive for mobile */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-gradient-to-br from-fine-green-500/30 to-fine-yellow-500/20 rounded-full blur-3xl animate-bg-float" />
-        <div className="absolute bottom-[-15%] right-[-10%] w-[50vw] h-[50vw] bg-gradient-to-tr from-fine-yellow-500/20 to-fine-green-500/10 rounded-full blur-2xl animate-bg-float2" />
+        <div className="absolute top-[-40%] left-[-40%] w-[120vw] h-[120vw] sm:top-[-20%] sm:left-[-10%] sm:w-[60vw] sm:h-[60vw] bg-gradient-to-br from-fine-green-500/30 to-fine-yellow-500/20 rounded-full blur-3xl animate-bg-float" />
+        <div className="absolute bottom-[-40%] right-[-40%] w-[110vw] h-[110vw] sm:bottom-[-15%] sm:right-[-10%] sm:w-[50vw] sm:h-[50vw] bg-gradient-to-tr from-fine-yellow-500/20 to-fine-green-500/10 rounded-full blur-2xl animate-bg-float2" />
       </div>
       <div className="relative z-10 w-full">
         {/* Render the form content directly, no Card or container */}
@@ -581,16 +581,16 @@ const FinancialSurveyForm = () => {
             </div>
           </div>
         )}
-        <div className="px-2 sm:px-8 pb-8">
+        <div className="px-1 sm:px-8 pb-8">
           <div key={stepAnimationKey} className="min-h-[300px] sm:min-h-[400px]">
             {renderStep()}
           </div>
           {currentStep > 0 && (
-            <div className="flex flex-col sm:flex-row justify-between mt-8 pt-6 gap-4 sm:gap-0">
+            <div className="flex flex-row justify-between mt-8 pt-6 gap-3">
               <Button
                 variant="outline"
                 onClick={prevStep}
-                className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-black text-gray-300 transition-none hover:bg-black hover:text-gray-300 focus:bg-black focus:text-gray-300 active:bg-black active:text-gray-300"
+                className="flex items-center space-x-2 px-4 py-2 sm:px-6 sm:py-3 border-2 border-gray-600 bg-black text-gray-300 text-base sm:text-lg transition-none hover:bg-black hover:text-gray-300 focus:bg-black focus:text-gray-300 active:bg-black active:text-gray-300 min-w-[110px] sm:min-w-[140px]"
                 style={{ pointerEvents: 'auto' }}
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -599,7 +599,7 @@ const FinancialSurveyForm = () => {
               {currentStep === totalSteps - 1 ? (
                 <Button
                   onClick={handleSubmit}
-                  className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
+                  className="flex items-center space-x-2 px-5 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium text-base sm:text-lg min-w-[110px] sm:min-w-[140px]"
                 >
                   <Award className="h-4 w-4" />
                   <span>Submit Survey</span>
@@ -607,7 +607,7 @@ const FinancialSurveyForm = () => {
               ) : (
                 <Button
                   onClick={nextStep}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
+                  className="flex items-center space-x-2 px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium text-base sm:text-lg min-w-[110px] sm:min-w-[140px]"
                 >
                   <span>Next</span>
                   <ChevronRight className="h-4 w-4" />
