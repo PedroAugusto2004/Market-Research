@@ -116,7 +116,7 @@ const FinancialSurveyForm = () => {
   const handleSubmit = async () => {
     if (validateCurrentStep()) {
       try {
-        await fetch('http://localhost:3001/api/survey', {
+        await fetch('https://market-research-m7vk.onrender.com/api/survey', {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: { 'Content-Type': 'application/json' }
