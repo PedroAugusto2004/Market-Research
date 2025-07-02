@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ChevronLeft, ChevronRight, DollarSign, TrendingUp, Award, Users, Rocket, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -552,70 +551,66 @@ const FinancialSurveyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-4xl mx-auto p-2 sm:p-8 bg-black shadow-none rounded-lg">
-        <Card className={`${currentStep === 0 ? 'bg-black' : 'bg-black/90'} backdrop-blur-sm border-0`}> 
-          {currentStep > 0 && (
-            <CardHeader className="pb-4 sm:pb-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2 sm:gap-0">
-                <div className="flex items-center space-x-2">
-                  {/* Always use DollarSign icon for all steps */}
-                  <DollarSign className="h-6 w-6 text-fine-yellow-500" />
-                  <span className="text-xs sm:text-sm font-medium text-gray-400">
-                    Step {currentStep + 1} of {totalSteps}
-                  </span>
-                </div>
+    <div className="relative min-h-screen bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
+      <div className="relative z-10 w-full">
+        {/* Render the form content directly, no Card or container */}
+        {currentStep > 0 && (
+          <div className="pb-4 sm:pb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2 sm:gap-0">
+              <div className="flex items-center space-x-2">
+                {/* Always use DollarSign icon for all steps */}
+                <DollarSign className="h-6 w-6 text-fine-yellow-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-400">
+                  Step {currentStep + 1} of {totalSteps}
+                </span>
               </div>
-              <Progress 
-                value={progress} 
-                className="h-2 sm:h-3 bg-black rounded-full overflow-hidden shadow-inner border border-gray-700 [&>div]:bg-green-500 [&>div]:transition-all [&>div]:duration-700 [&>div]:ease-in-out"
-                style={{ boxShadow: '0 2px 8px 0 rgba(34,197,94,0.15)', border: '1.5px solid #475569' }}
-              />
-              <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2">
-                <span>Getting started</span>
-                <span>Almost done!</span>
-              </div>
-            </CardHeader>
-          )}
-
-          <CardContent className="px-2 sm:px-8 pb-8">
-            <div key={stepAnimationKey} className="min-h-[300px] sm:min-h-[400px]">
-              {renderStep()}
             </div>
-
-            {currentStep > 0 && (
-              <div className="flex flex-col sm:flex-row justify-between mt-8 pt-6 gap-4 sm:gap-0">
+            <Progress 
+              value={progress} 
+              className="h-2 sm:h-3 bg-black rounded-full overflow-hidden shadow-inner border border-gray-700 [&>div]:bg-green-500 [&>div]:transition-all [&>div]:duration-700 [&>div]:ease-in-out"
+              style={{ boxShadow: '0 2px 8px 0 rgba(34,197,94,0.15)', border: '1.5px solid #475569' }}
+            />
+            <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2">
+              <span>Getting started</span>
+              <span>Almost done!</span>
+            </div>
+          </div>
+        )}
+        <div className="px-2 sm:px-8 pb-8">
+          <div key={stepAnimationKey} className="min-h-[300px] sm:min-h-[400px]">
+            {renderStep()}
+          </div>
+          {currentStep > 0 && (
+            <div className="flex flex-col sm:flex-row justify-between mt-8 pt-6 gap-4 sm:gap-0">
+              <Button
+                variant="outline"
+                onClick={prevStep}
+                className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-black text-gray-300 transition-none hover:bg-black hover:text-gray-300 focus:bg-black focus:text-gray-300 active:bg-black active:text-gray-300"
+                style={{ pointerEvents: 'auto' }}
+              >
+                <ChevronLeft className="h-4 w-4" />
+                <span className="hover:text-gray-300 focus:text-gray-300 active:text-gray-300">Previous</span>
+              </Button>
+              {currentStep === totalSteps - 1 ? (
                 <Button
-                  variant="outline"
-                  onClick={prevStep}
-                  className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-600 bg-black text-gray-300 transition-none hover:bg-black hover:text-gray-300 focus:bg-black focus:text-gray-300 active:bg-black active:text-gray-300"
-                  style={{ pointerEvents: 'auto' }}
+                  onClick={handleSubmit}
+                  className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
                 >
-                  <ChevronLeft className="h-4 w-4" />
-                  <span className="hover:text-gray-300 focus:text-gray-300 active:text-gray-300">Previous</span>
+                  <Award className="h-4 w-4" />
+                  <span>Submit Survey</span>
                 </Button>
-
-                {currentStep === totalSteps - 1 ? (
-                  <Button
-                    onClick={handleSubmit}
-                    className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
-                  >
-                    <Award className="h-4 w-4" />
-                    <span>Submit Survey</span>
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={nextStep}
-                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
-                  >
-                    <span>Next</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              ) : (
+                <Button
+                  onClick={nextStep}
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
