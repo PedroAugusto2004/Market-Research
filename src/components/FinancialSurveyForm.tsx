@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,6 +29,7 @@ interface FormData {
 }
 
 const FinancialSurveyForm = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -48,6 +50,7 @@ const FinancialSurveyForm = () => {
     wouldRecommend: ''
   });
   const [stepAnimationKey, setStepAnimationKey] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
 
@@ -115,25 +118,45 @@ const FinancialSurveyForm = () => {
 
   const handleSubmit = async () => {
     if (validateCurrentStep()) {
+      setLoading(true);
       try {
         await fetch('https://market-research-m7vk.onrender.com/api/survey', {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: { 'Content-Type': 'application/json' }
         });
+        sessionStorage.setItem('surveySubmitted', 'true');
         toast({
           title: "Survey Submitted! 🎉",
           description: "Thank you for helping us improve financial education!",
         });
+        setTimeout(() => {
+          navigate('/thankyou', { replace: true });
+        }, 500);
       } catch (error) {
         toast({
           title: "Submission failed",
           description: "There was an error submitting your survey. Please try again.",
           variant: "destructive"
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
+
+  React.useEffect(() => {
+    // Prevent access if already submitted
+    if (sessionStorage.getItem('surveySubmitted') === 'true') {
+      // If coming from ThankYou page and wants to see intro, show intro (step 0)
+      if (window.history.state && window.history.state.usr && window.history.state.usr.goToIntro) {
+        setCurrentStep(0);
+      } else {
+        navigate('/thankyou', { replace: true });
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const ageOptions = [
     'Under 18 years old',
@@ -611,10 +634,25 @@ const FinancialSurveyForm = () => {
               {currentStep === totalSteps - 1 ? (
                 <Button
                   onClick={handleSubmit}
-                  className="flex items-center space-x-2 px-5 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium text-base sm:text-lg min-w-[110px] sm:min-w-[140px]"
+                  className="flex items-center space-x-2 px-5 py-2 sm:px-8 sm:py-3 bg-gradient-to-r from-fine-green-500 to-fine-green-600 text-white font-medium text-base sm:text-lg min-w-[110px] sm:min-w-[140px] relative"
+                  disabled={loading}
                 >
-                  <Award className="h-4 w-4" />
-                  <span>Submit Survey</span>
+                  {loading ? (
+                    <>
+                      <span className="inline-flex items-center">
+                        <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+                        <span>Submitting...</span>
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <Award className="h-4 w-4" />
+                      <span>Submit Survey</span>
+                    </>
+                  )}
                 </Button>
               ) : (
                 <Button
