@@ -113,13 +113,25 @@ const FinancialSurveyForm = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateCurrentStep()) {
-      console.log('Form Data:', formData);
-      toast({
-        title: "Survey Submitted! 🎉",
-        description: "Thank you for helping us improve financial education!",
-      });
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbxKvr-LW3MxPksCSsLHd86eBwx3Rk93YTgLJV_YMBSLPNs13HnU_evcFSXcWnOCa4Yy4A/exec', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        toast({
+          title: "Survey Submitted! 🎉",
+          description: "Thank you for helping us improve financial education!",
+        });
+      } catch (error) {
+        toast({
+          title: "Submission failed",
+          description: "There was an error submitting your survey. Please try again.",
+          variant: "destructive"
+        });
+      }
     }
   };
 
