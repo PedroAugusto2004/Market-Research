@@ -552,6 +552,11 @@ const FinancialSurveyForm = () => {
 
   return (
     <div className="relative min-h-screen bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
+      {/* Minimalistic animated background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-gradient-to-br from-fine-green-500/30 to-fine-yellow-500/20 rounded-full blur-3xl animate-bg-float" />
+        <div className="absolute bottom-[-15%] right-[-10%] w-[50vw] h-[50vw] bg-gradient-to-tr from-fine-yellow-500/20 to-fine-green-500/10 rounded-full blur-2xl animate-bg-float2" />
+      </div>
       <div className="relative z-10 w-full">
         {/* Render the form content directly, no Card or container */}
         {currentStep > 0 && (
@@ -633,6 +638,30 @@ Add this to your global CSS (e.g., index.css or App.css) if not already present:
 }
 .animate-fadein-smooth {
   animation: fadein-smooth 0.7s cubic-bezier(0.33,1,0.68,1) both;
+}
+
+@keyframes bg-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+.animate-bg-float {
+  animation: bg-float 6s ease-in-out infinite;
+}
+
+@keyframes bg-float2 {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(8px) scale(1.02);
+  }
+}
+.animate-bg-float2 {
+  animation: bg-float2 6s ease-in-out infinite;
 }
 */
 

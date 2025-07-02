@@ -40,3 +40,45 @@
 .read-the-docs {
   color: #888;
 }
+
+@keyframes bg-float {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-40px) scale(1.08) rotate(8deg);
+  }
+  50% {
+    transform: translateY(10px) scale(1.04) rotate(-6deg);
+  }
+  75% {
+    transform: translateY(-20px) scale(1.06) rotate(4deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+.animate-bg-float {
+  animation: bg-float 6s ease-in-out infinite;
+}
+
+@keyframes bg-float2 {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  20% {
+    transform: translateY(30px) scale(1.07) rotate(-7deg);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.03) rotate(5deg);
+  }
+  80% {
+    transform: translateY(20px) scale(1.06) rotate(-3deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+.animate-bg-float2 {
+  animation: bg-float2 8s ease-in-out infinite;
+}
