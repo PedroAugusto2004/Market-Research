@@ -116,7 +116,7 @@ const FinancialSurveyForm = () => {
   const handleSubmit = async () => {
     if (validateCurrentStep()) {
       try {
-        await fetch('https://script.google.com/macros/s/AKfycbxKvr-LW3MxPksCSsLHd86eBwx3Rk93YTgLJV_YMBSLPNs13HnU_evcFSXcWnOCa4Yy4A/exec', {
+        await fetch('http://localhost:3001/api/survey', {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: { 'Content-Type': 'application/json' }
