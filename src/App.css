@@ -1,58 +1,91 @@
+body, #root {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  background: #000;
+  color: #f5f5f5;
+  font-weight: 400;
+}
+
 #root {
-  max-width: 1280px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem;
   text-align: center;
+  background: none;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  height: 4em;
+  padding: 1em;
+  filter: none;
+  transition: none;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.logo:hover, .logo.react:hover {
+  filter: none;
 }
 
 .card {
-  padding: 2em;
+  padding: 1.5em;
+  background: transparent;
+  border-radius: 8px;
+  box-shadow: none;
+  border: 1px solid #ececec;
 }
 
 .read-the-docs {
-  color: #888;
+  color: #b0b0b0;
 }
 
+button, .button, .btn {
+  font-family: inherit;
+  background: none;
+  border: 1px solid #e0e0e0;
+  color: #232323;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1rem;
+  font-weight: 400;
+  box-shadow: none;
+  transition: background 0.2s, border 0.2s;
+}
+button:hover, .button:hover, .btn:hover {
+  background: #f5f5f5;
+  border-color: #bdbdbd;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  background: #fafbfc;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  color: #232323;
+  font-size: 1rem;
+  box-shadow: none;
+  transition: border 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #bdbdbd;
+  outline: none;
+}
+
+/* Remove colored backgrounds from animated backgrounds */
+.animate-bg-float, .animate-bg-float2 {
+  background: none !important;
+}
+
+/* Minimalistic animation tweaks */
 @keyframes bg-float {
   0% {
     transform: translateY(0) scale(1) rotate(0deg);
   }
   25% {
-    transform: translateY(-40px) scale(1.08) rotate(8deg);
+    transform: translateY(-10px) scale(1.01) rotate(1deg);
   }
   50% {
-    transform: translateY(10px) scale(1.04) rotate(-6deg);
+    transform: translateY(5px) scale(1.01) rotate(-1deg);
   }
   75% {
-    transform: translateY(-20px) scale(1.06) rotate(4deg);
+    transform: translateY(-5px) scale(1.01) rotate(0.5deg);
   }
   100% {
     transform: translateY(0) scale(1) rotate(0deg);
@@ -67,13 +100,13 @@
     transform: translateY(0) scale(1) rotate(0deg);
   }
   20% {
-    transform: translateY(30px) scale(1.07) rotate(-7deg);
+    transform: translateY(5px) scale(1.01) rotate(-1deg);
   }
   50% {
-    transform: translateY(-20px) scale(1.03) rotate(5deg);
+    transform: translateY(-5px) scale(1.01) rotate(1deg);
   }
   80% {
-    transform: translateY(20px) scale(1.06) rotate(-3deg);
+    transform: translateY(5px) scale(1.01) rotate(-0.5deg);
   }
   100% {
     transform: translateY(0) scale(1) rotate(0deg);
@@ -81,4 +114,43 @@
 }
 .animate-bg-float2 {
   animation: bg-float2 8s ease-in-out infinite;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  z-index: 1;
+  animation: bubble-float linear infinite;
+}
+
+@keyframes bubble-float {
+  0% {
+    transform: translateY(100vh) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-20vh) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.bubble-yellow {
+  background: #ffe066;
+}
+.bubble-lightyellow {
+  background: #fff9c4;
+}
+.bubble-verylightyellow {
+  background: #fffde7;
+}
+.bubble-white {
+  background: #fff;
 }

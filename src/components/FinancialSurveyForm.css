@@ -1,0 +1,27 @@
+@keyframes rise {
+  from {
+    transform: translateY(150px);
+  }
+  to {
+    transform: translateY(-110vh);
+  }
+}
+
+.bubble {
+  animation-name: rise;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.bubble-yellow {
+  background-color: rgba(250, 204, 21, 0.5);
+}
+.bubble-lightyellow {
+  background-color: rgba(253, 230, 138, 0.5);
+}
+.bubble-verylightyellow {
+  background-color: rgba(254, 243, 199, 0.5);
+}
+.bubble-white {
+  background-color: rgba(255, 255, 255, 0.5);
+}

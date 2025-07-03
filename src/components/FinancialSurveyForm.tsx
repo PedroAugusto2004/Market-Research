@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './FinancialSurveyForm.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -201,6 +202,22 @@ const FinancialSurveyForm = () => {
     'Between $19.99 and $29.99 per month',
     '$30.00 or more'
   ];
+
+  // Bubble configs for static, always-visible bubbles
+  const bubbleConfigs = Array.from({ length: 14 }).map((_, i) => {
+    const size = 30 + Math.random() * 90;
+    const left = Math.random() * 100;
+    const color = [
+      'bubble-yellow',
+      'bubble-lightyellow',
+      'bubble-verylightyellow',
+      'bubble-white'
+    ][i % 4];
+    const opacity = 0.3 + Math.random() * 0.5;
+    const duration = 8 + Math.random() * 6; // 8-14s
+    const delay = -(Math.random() * duration);
+    return { left, size, color, opacity, duration, delay, i };
+  });
 
   const renderStep = () => {
     switch (currentStep) {
@@ -587,33 +604,35 @@ const FinancialSurveyForm = () => {
 
   return (
     <div className="relative min-h-screen bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
-      {/* Minimalistic animated background - responsive for mobile */}
+      {/* Animated bubbles background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-40%] left-[-40%] w-[120vw] h-[120vw] sm:top-[-20%] sm:left-[-10%] sm:w-[60vw] sm:h-[60vw] bg-gradient-to-br from-fine-green-500/30 to-fine-yellow-500/20 rounded-full blur-3xl animate-bg-float" />
-        <div className="absolute bottom-[-40%] right-[-40%] w-[110vw] h-[110vw] sm:bottom-[-15%] sm:right-[-10%] sm:w-[50vw] sm:h-[50vw] bg-gradient-to-tr from-fine-yellow-500/20 to-fine-green-500/10 rounded-full blur-2xl animate-bg-float2" />
+        {bubbleConfigs.map(bubble => (
+          <div
+            key={bubble.i}
+            className={`bubble absolute rounded-full ${bubble.color}`}
+            style={{
+              left: `${bubble.left}%`,
+              width: bubble.size,
+              height: bubble.size,
+              opacity: bubble.opacity,
+              bottom: 0,
+              animationDuration: `${bubble.duration}s`,
+              animationDelay: `${bubble.delay}s`,
+            }}
+          />
+        ))}
       </div>
       <div className="relative z-10 w-full">
         {/* Render the form content directly, no Card or container */}
         {currentStep > 0 && (
           <div className="pb-4 sm:pb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2 sm:gap-0">
-              <div className="flex items-center space-x-2">
-                {/* Always use DollarSign icon for all steps */}
-                <DollarSign className="h-6 w-6 text-fine-yellow-500" />
-                <span className="text-xs sm:text-sm font-medium text-gray-400">
-                  Step {currentStep + 1} of {totalSteps}
-                </span>
-              </div>
             </div>
             <Progress 
               value={progress} 
               className="h-2 sm:h-3 bg-black rounded-full overflow-hidden shadow-inner border border-gray-700 [&>div]:bg-green-500 [&>div]:transition-all [&>div]:duration-700 [&>div]:ease-in-out"
               style={{ boxShadow: '0 2px 8px 0 rgba(34,197,94,0.15)', border: '1.5px solid #475569' }}
             />
-            <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2">
-              <span>Getting started</span>
-              <span>Almost done!</span>
-            </div>
           </div>
         )}
         <div className="px-1 sm:px-8 pb-8">
@@ -672,46 +691,3 @@ const FinancialSurveyForm = () => {
 };
 
 export default FinancialSurveyForm;
-
-/*
-Add this to your global CSS (e.g., index.css or App.css) if not already present:
-
-@keyframes fadein-smooth {
-  0% {
-    opacity: 0;
-    transform: translateY(32px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-.animate-fadein-smooth {
-  animation: fadein-smooth 0.7s cubic-bezier(0.33,1,0.68,1) both;
-}
-
-@keyframes bg-float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-8px) scale(1.02);
-  }
-}
-.animate-bg-float {
-  animation: bg-float 6s ease-in-out infinite;
-}
-
-@keyframes bg-float2 {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(8px) scale(1.02);
-  }
-}
-.animate-bg-float2 {
-  animation: bg-float2 6s ease-in-out infinite;
-}
-*/
-
