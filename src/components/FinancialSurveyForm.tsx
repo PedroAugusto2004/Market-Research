@@ -204,20 +204,22 @@ const FinancialSurveyForm = () => {
   ];
 
   // Bubble configs for static, always-visible bubbles
-  const bubbleConfigs = Array.from({ length: 14 }).map((_, i) => {
-    const size = 30 + Math.random() * 90;
-    const left = Math.random() * 100;
-    const color = [
-      'bubble-yellow',
-      'bubble-lightyellow',
-      'bubble-verylightyellow',
-      'bubble-white'
-    ][i % 4];
-    const opacity = 0.3 + Math.random() * 0.5;
-    const duration = 8 + Math.random() * 6; // 8-14s
-    const delay = -(Math.random() * duration);
-    return { left, size, color, opacity, duration, delay, i };
-  });
+  const bubbleConfigs = React.useMemo(() =>
+    Array.from({ length: 14 }).map((_, i) => {
+      const size = 30 + Math.random() * 90;
+      const left = Math.random() * 100;
+      const color = [
+        'bubble-yellow',
+        'bubble-lightyellow',
+        'bubble-verylightyellow',
+        'bubble-white'
+      ][i % 4];
+      const opacity = 0.3 + Math.random() * 0.5;
+      const duration = 8 + Math.random() * 6; // 8-14s
+      const delay = -(Math.random() * duration);
+      return { left, size, color, opacity, duration, delay, i };
+    }),
+  []);
 
   const renderStep = () => {
     switch (currentStep) {
@@ -605,7 +607,7 @@ const FinancialSurveyForm = () => {
   return (
     <div className="relative min-h-screen bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
       {/* Animated bubbles background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="fixed inset-0 z-0 pointer-events-none">
         {bubbleConfigs.map(bubble => (
           <div
             key={bubble.i}
