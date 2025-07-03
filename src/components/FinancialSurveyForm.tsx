@@ -688,6 +688,11 @@ const FinancialSurveyForm = () => {
           )}
         </div>
       </div>
+      <div className="absolute bottom-4 text-center w-full z-20 pointer-events-none">
+        <p className="text-sm text-gray-500 pointer-events-auto">
+          Made by <a href="https://pedrodev.website/" target="_blank" rel="noopener noreferrer" className="font-semibold text-fine-green-400 hover:text-fine-green-300 transition-colors">Pedro Developments</a>
+        </p>
+      </div>
     </div>
   );
 };
