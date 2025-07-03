@@ -97,6 +97,7 @@ const FinancialSurveyForm = () => {
     if (validateCurrentStep() && currentStep < totalSteps - 1) {
       setStepAnimationKey(prev => prev + 1); // force remount for animation
       setCurrentStep(prev => prev + 1);
+      window.scrollTo(0, 0);
     } else if (!validateCurrentStep()) {
       let errorMessage = "Fill in all the required information before proceeding.";
       if (currentStep === 1 && formData.email.trim() !== '' && !isValidEmail(formData.email)) {
@@ -114,6 +115,7 @@ const FinancialSurveyForm = () => {
     if (currentStep > 0) {
       setStepAnimationKey(prev => prev + 1); // force remount for animation
       setCurrentStep(prev => prev - 1);
+      window.scrollTo(0, 0);
     }
   };
 
