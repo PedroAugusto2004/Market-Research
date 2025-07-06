@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import '../components/FinancialSurveyForm.css';
 
 const ThankYou = () => {
   const navigate = useNavigate();
@@ -11,12 +12,43 @@ const ThankYou = () => {
     navigate('/', { replace: true, state: { goToIntro: true } });
   };
 
+  // Bubble configs for animated background
+  const bubbleConfigs = React.useMemo(() =>
+    Array.from({ length: 14 }).map((_, i) => {
+      const size = 30 + Math.random() * 90;
+      const left = Math.random() * 100;
+      const color = [
+        'bubble-yellow',
+        'bubble-lightyellow',
+        'bubble-verylightyellow',
+        'bubble-white'
+      ][i % 4];
+      const opacity = 0.3 + Math.random() * 0.5;
+      const duration = 8 + Math.random() * 6; // 8-14s
+      const delay = -(Math.random() * duration);
+      return { left, size, color, opacity, duration, delay, i };
+    }),
+  []);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-4 py-12 relative overflow-hidden">
-      {/* Subtle animated background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-30%] left-[-30%] w-[80vw] h-[80vw] bg-gradient-to-br from-fine-green-500/20 to-fine-yellow-500/10 rounded-full blur-3xl animate-bg-float" />
-        <div className="absolute bottom-[-30%] right-[-30%] w-[70vw] h-[70vw] bg-gradient-to-tr from-fine-yellow-500/10 to-fine-green-500/5 rounded-full blur-2xl animate-bg-float2" />
+      {/* Animated bubbles background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {bubbleConfigs.map(bubble => (
+          <div
+            key={bubble.i}
+            className={`bubble absolute rounded-full ${bubble.color}`}
+            style={{
+              left: `${bubble.left}%`,
+              width: bubble.size,
+              height: bubble.size,
+              opacity: bubble.opacity,
+              bottom: 0,
+              animationDuration: `${bubble.duration}s`,
+              animationDelay: `${bubble.delay}s`,
+            }}
+          />
+        ))}
       </div>
       <div className="relative z-10 flex flex-col items-center w-full max-w-md">
         <svg width="56" height="56" fill="none" viewBox="0 0 56 56" className="mb-6">
@@ -34,6 +66,11 @@ const ThankYou = () => {
         >
           Return
         </Button>
+      </div>
+      <div className="absolute bottom-4 text-center w-full z-20 pointer-events-none">
+        <p className="text-sm text-gray-500 pointer-events-auto">
+          Made by <a href="https://pedrodev.website/" target="_blank" rel="noopener noreferrer" className="font-semibold text-fine-green-400 hover:text-fine-green-300 transition-colors">Pedro Developments</a>
+        </p>
       </div>
     </div>
   );
